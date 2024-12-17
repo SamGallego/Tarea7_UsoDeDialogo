@@ -34,7 +34,7 @@ public class MiFragmento extends DialogFragment {
                         // Ejecutar al pulsar el botón aceptar
                     }
                 })
-                .setNegativeButton("KJDSALJLASJLAJS", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Ejecutar al pulsar el botón aceptar
                         MiFragmento.this.getDialog().cancel();
