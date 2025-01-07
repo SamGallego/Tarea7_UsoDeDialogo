@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MiFragmento"/>
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Spinner para seleccionar asignaturas -->
+    <Spinner
+        android:id="@+id/spinnerAsignaturas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Campo de texto para escribir el nombre de la tarea -->
+    <EditText
+        android:id="@+id/editTextTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la tarea"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Campo de fecha para seleccionar la fecha -->
+    <TextView
+        android:id="@+id/textViewFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar fecha"
+        android:textSize="16sp"
+        android:background="@android:drawable/editbox_background"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>
+

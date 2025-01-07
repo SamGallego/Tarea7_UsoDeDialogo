@@ -2,4 +2,13 @@
     <string name="app_name">Tarea7_UsoDeDialogo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="agregar_tarea">Agregar Tarea</string>
+    <string name="no_tareas">No hay tareas disponibles</string>
+    <string-array name="asignaturas_array">
+        <item>PMDM</item>
+        <item>AD</item>
+        <item>EIE</item>
+        <item>PDP</item>
+        <item>DI</item>
+    </string-array>
 </resources>
