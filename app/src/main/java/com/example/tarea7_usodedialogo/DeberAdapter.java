@@ -77,7 +77,6 @@ public class DeberAdapter extends RecyclerView.Adapter<DeberAdapter.ViewHolder> 
         Deber tarea = tareas.get(position);
         holder.bind(tarea);
 
-        // Configurar clics en cada elemento
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.onItemClick(position);
@@ -103,6 +102,7 @@ public class DeberAdapter extends RecyclerView.Adapter<DeberAdapter.ViewHolder> 
         private final TextView titulo;
         private final TextView fecha;
         private final TextView estado;
+        private final TextView hora;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +110,7 @@ public class DeberAdapter extends RecyclerView.Adapter<DeberAdapter.ViewHolder> 
             titulo = itemView.findViewById(R.id.textTitulo);
             fecha = itemView.findViewById(R.id.textFecha);
             estado = itemView.findViewById(R.id.textEstado);
+            hora = itemView.findViewById(R.id.textHora);
         }
 
         public void bind(Deber tarea) {
@@ -120,6 +121,7 @@ public class DeberAdapter extends RecyclerView.Adapter<DeberAdapter.ViewHolder> 
             String fechaOriginal = tarea.getFecha();
             String fechaFormateada = formatFecha(fechaOriginal);
             fecha.setText(fechaFormateada);
+            hora.setText(tarea.getHora());
 
             estado.setText(tarea.getEstado());
         }

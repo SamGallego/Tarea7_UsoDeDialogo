@@ -2,6 +2,7 @@ package com.example.tarea7_usodedialogo;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -20,26 +21,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MiFragmento extends DialogFragment {
 
     private OnTareaGuardadaListener listener;
     private String fechaSeleccionada = "";
+    private String horaSeleccionada = "";
     private String asignaturaSeleccionada = "";
 
-    // Método estático para crear un fragmento para edición de tareas
     public static MiFragmento nuevoFragmento(Deber tarea, int position) {
         MiFragmento fragment = new MiFragmento();
         Bundle args = new Bundle();
 
-        // Pasar los datos de la tarea al fragmento mediante un Bundle
         if (tarea != null) {
             args.putString("titulo", tarea.getTitulo());
             args.putString("asignatura", tarea.getAsignatura());
             args.putString("descripcion", tarea.getDescripcion());
             args.putString("fecha", tarea.getFecha());
             args.putString("hora", tarea.getHora());
-            args.putInt("position", position); // Posición en el adaptador
+            args.putInt("position", position);
         }
 
         fragment.setArguments(args);
@@ -62,8 +63,12 @@ public class MiFragmento extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_mi_fragmento, null);
 
-        // Configurar Spinner de asignaturas
         Spinner spinner = view.findViewById(R.id.spinnerAsignaturas);
+        EditText titulo = view.findViewById(R.id.editTextTitulo);
+        TextView textViewFecha = view.findViewById(R.id.textViewFecha);
+        TextView textViewHora = view.findViewById(R.id.textViewHora);
+
+        // Configurar adaptador del Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.asignaturas_array,
@@ -72,27 +77,27 @@ public class MiFragmento extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        // Configurar campos de entrada
-        EditText titulo = view.findViewById(R.id.editTextTitulo);
-        TextView textViewFecha = view.findViewById(R.id.textViewFecha);
+        int initialPosition = -1;
 
-        // Cargar datos si se está editando una tarea
-        int position = -1;
         if (getArguments() != null) {
             titulo.setText(getArguments().getString("titulo", ""));
-            textViewFecha.setText(getArguments().getString("fecha", ""));
+            fechaSeleccionada = getArguments().getString("fecha", ""); // Inicializar fecha
+            horaSeleccionada = getArguments().getString("hora", "");  // Inicializar hora
             asignaturaSeleccionada = getArguments().getString("asignatura", "");
+            initialPosition = getArguments().getInt("position", -1);
 
-            // Configurar el Spinner para que seleccione la asignatura existente
+            textViewFecha.setText(fechaSeleccionada.isEmpty() ? "Seleccionar fecha" : fechaSeleccionada);
+            textViewHora.setText(horaSeleccionada.isEmpty() ? "Seleccionar hora" : horaSeleccionada);
+
             int spinnerPosition = adapter.getPosition(asignaturaSeleccionada);
             if (spinnerPosition >= 0) {
                 spinner.setSelection(spinnerPosition);
             }
-
-            position = getArguments().getInt("position", -1);
         }
 
-        // Manejar selección de asignaturas
+        final int finalPosition = initialPosition;
+
+        // Actualizar asignatura seleccionada cuando el usuario cambia el valor del Spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,27 +126,39 @@ public class MiFragmento extends DialogFragment {
             datePickerDialog.show();
         });
 
-        int finalPosition = position;
+        // Selector de hora
+        textViewHora.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                    requireContext(),
+                    (view1, hourOfDay, minute) -> {
+                        horaSeleccionada = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                        textViewHora.setText(horaSeleccionada);
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    true
+            );
+            timePickerDialog.show();
+        });
+
         builder.setView(view)
                 .setTitle(getArguments() == null ? "Agregar Tarea" : "Editar Tarea")
                 .setPositiveButton("Guardar", (dialog, which) -> {
-                    // Validar campos
-                    if (asignaturaSeleccionada.isEmpty() || titulo.getText().toString().trim().isEmpty() || fechaSeleccionada.isEmpty()) {
-                        Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                    if (asignaturaSeleccionada.isEmpty() || titulo.getText().toString().trim().isEmpty() || fechaSeleccionada.isEmpty() || horaSeleccionada.isEmpty()) {
+                        Toast.makeText(requireContext(), "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    // Crear una nueva tarea o actualizarla
                     Deber nuevaTarea = new Deber(
                             titulo.getText().toString(),
                             asignaturaSeleccionada,
                             "",
                             fechaSeleccionada,
-                            "",
+                            horaSeleccionada,
                             "Pendiente"
                     );
 
-                    // Enviar tarea al listener con la posición
                     listener.onTareaGuardada(nuevaTarea, finalPosition);
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> dismiss());

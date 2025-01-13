@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- Asignatura (negrita) -->
+
     <TextView
         android:id="@+id/textAsignatura"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:layout_marginBottom="4dp" />
 
-    <!-- Nombre de la tarea -->
+
     <TextView
         android:id="@+id/textTitulo"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:textSize="14sp"
         android:layout_marginBottom="4dp" />
 
-    <!-- Fecha de entrega -->
+
     <TextView
         android:id="@+id/textFecha"
         android:layout_width="match_parent"
@@ -33,13 +33,21 @@
         android:textSize="14sp"
         android:layout_marginBottom="4dp" />
 
-    <!-- Estado -->
+
     <TextView
         android:id="@+id/textEstado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Estado"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textHora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hora de entrega"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
 
 
 </LinearLayout>
