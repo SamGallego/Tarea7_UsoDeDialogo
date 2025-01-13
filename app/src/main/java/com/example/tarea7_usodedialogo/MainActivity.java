@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnTareaGuardadaLi
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // Acción para clic corto
+
             }
 
             @Override
